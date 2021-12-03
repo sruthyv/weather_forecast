@@ -35,5 +35,5 @@ BYOD is a rails react application
 
 6. User Stories
 
-User with role admin can set weather forecast range
-User with role user can get the weather forecast accordingly when they use the Pincode which is in UK.
+   - User with role admin can set weather forecast range
+   - User with role user can get the weather forecast accordingly when they use the Pincode which is in UK.

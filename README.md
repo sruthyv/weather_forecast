@@ -1,24 +1,39 @@
-# README
+# BYOD
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+BYOD is a rails react application
 
-Things you may want to cover:
+## Getting Started
 
-* Ruby version
+1. Clone the repo
 
-* System dependencies
+   ```
+   $ git clone https://github.com/sruthyv/weather_forecast.git
+   $ cd weather_forecast
+   ```
 
-* Configuration
+2. Install dependencies
 
-* Database creation
+   ```
+   $ bundle install
+   $ yarn install
+   ```
 
-* Database initialization
+3. Create and setup the database
 
-* How to run the test suite
+   ```
+   $ rails db:create
+   $ rails db:migrate
 
-* Services (job queues, cache servers, search engines, etc.)
+   ```
 
-* Deployment instructions
+4. Run application locally
 
-* ...
+   ```
+   $ rails s
+
+   ```
+
+6. User Stories
+
+User with role admin can set weather forecast range
+User with role user can get the weather forecast accordingly when they use the Pincode which is in UK.

@@ -1,0 +1,122 @@
+<hr>
+<div class="container-fluid">
+  <% if current_user.role == 'user' %>
+    <h1>Weather Forecast</h1>
+    <div class="row-fluid clearfix">
+          <form type="post">
+            <div>
+              <div>
+                <label>
+                  <small> Enter the pincode of your area</small>
+                  <input type="text" style="" required class="align-left userPincode"/> 
+                  <button id="findWeatherOfArea">Go</button>
+                </label>
+              </div>
+            </div>
+            <input type="submit" value="submit" class="submituserPincodeForm" style="display: none;" />
+          </form>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <h1>Weather Forecast Setup</h1>
+    <div class="row-fluid clearfix">
+          <form type="post">
+            <div>
+              <div>
+                <div>Define the temperature range in Degree Celsius</div><hr><br>
+                <label>
+                  <strong> Hot </strong>
+                  <div>
+                    To: <input type="number" min="0" max="100" class="hotTo" value="<%= temperature(current_user.id)['hot_to']%>">
+                    From: <input type="number" min="0" max="100" class="hotFrom" value="<%= temperature(current_user.id)['hot_from']%>">
+                  </div>
+                </label>
+                <br>
+                <label>
+                  <strong> Warm </strong>
+                  <div>
+                    To: <input type="number" min="0" max="100" class="warmTo" value="<%= temperature(current_user.id)['warm_to']%>">
+                    From: <input type="number" min="0" max="100" class="warmFrom" value="<%= temperature(current_user.id)['warm_from']%>">
+                  </div>
+                </label>
+                <br>
+                <label>
+                  <strong> Cold </strong>
+                  <div>
+                    To: <input type="number" min="0" max="100" class="coldTo" value="<%= temperature(current_user.id)['cold_to']%>">
+                    From: <input type="number" min="0" max="100" class="coldFrom" value="<%= temperature(current_user.id)['cold_from']%>">
+                  </div>
+                </label>
+                <br>
+                <button id="defineTemperature" data-user_id="<%= current_user.id %>">Save</button>
+              </div>
+            </div>
+            <input type="submit" value="submit" class="submitTemperatureForm" style="display: none;" />
+          </form>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div id="weatherForecast">
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#findWeatherOfArea").click(function(){
+      $("#weatherForecast").empty();
+      $.ajax({
+        url: "/weather/forecast",
+        data: JSON.stringify({ pin_code: $('.userPincode').val() }),
+        method: "POST",
+        type: "POST",
+        contentType: 'application/json',
+        success: function(data){
+          if(data.max_temp == 0) {
+            alert('Please provide a valid Pincode which is in the UK.')
+          }
+          else {
+            if(data.temperature_range == 'Hot') {
+              $("#weatherForecast").append("<br> Weather is: " + "<p class='text-red'>" + data.temperature_range + "</p><br>");
+            }
+            else if(data.temperature_range == 'Warm') {
+              $("#weatherForecast").append("<br> Weather is: " + "<p class='text-orange'>" + data.temperature_range + "</p><br>");
+            }
+            else if(data.temperature_range == 'Cold') {
+              $("#weatherForecast").append("<br> Weather is: " + "<p class='text-blue'>" + data.temperature_range + "</p><br>");
+            }
+            $("#weatherForecast").append("Temperature is: " + data.max_temp + ' °C');
+          }
+        },
+        error: function(data){
+          alert('Invalid Pincode. Please provide a valid Pincode which is in the UK.')
+        }
+      });
+      return false;
+    });
+
+    $('#defineTemperature').click(function(){
+      user_id = $(this).attr("data-user_id");
+      dataToSend = {
+        hot_to: $('.hotTo').val(),
+        hot_from: $('.hotFrom').val(),
+        warm_to: $('.warmTo').val(),
+        warm_from: $('.warmFrom').val(),
+        cold_to: $('.coldTo').val(),
+        cold_from: $('.coldFrom').val()
+      }
+      $.ajax({
+        url: "/users/" + user_id + "/change_temperature",
+        data: JSON.stringify({ data: dataToSend }),
+        method: "POST",
+        type: "POST",
+        contentType: 'application/json',
+        success: function(){
+          alert('Temperature range updated successfully')
+        }
+      });
+    });
+  });
+</script>

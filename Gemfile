@@ -59,4 +59,4 @@ gem 'devise'
 
 gem 'pry'
 
-gem 'rubocop-rails', require: false
+gem 'rubocop-rails', '2.7.0'

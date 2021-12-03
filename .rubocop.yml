@@ -1,1 +1,44 @@
-require: rubocop-rails
+require:
+  - rubocop-rails
+
+Metrics/BlockLength:
+  IgnoredMethods:
+    - define
+    - describe
+    - factory
+    - trait
+    - context
+
+Metrics/MethodLength:
+  IgnoredMethods:
+  Exclude:
+
+AllCops:
+  NewCops: disable
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - '/app/vendor/**/*'
+    - 'Gemfile'
+    - 'Rakefile'
+    - 'node_modules/**/*'
+    - spec/rails_helper.rb
+    - spec/spec_helper.rb
+    - 'lib/tasks/*.rake'
+    - 'spec/support/*'
+  TargetRubyVersion: 2.7.2
+
+Layout/LineLength:
+  Max: 80
+  Exclude:
+    - 'spec/**/*'
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+
+Style/NumericLiteralPrefix:
+  Exclude:
